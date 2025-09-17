@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ejs file</title>
+    <title>Task Manager</title>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
   </head>
-  <body>
-    <section>
-     <div class="main w-full min-h-screen bg-zinc-900" >
-      <form action="">
-        <input type="text">
-      </form>
-     </div>
-    </section>
+  <body class="bg-zinc-900 text-white font-sans">
+    <div class="main w-full min-h-screen flex flex-col items-center justify-center p-6">
+      
+      <!-- Task Form -->
+      <div class="form w-full max-w-md bg-zinc-800 rounded-2xl shadow-lg p-6">
+        <h1 class="text-2xl font-semibold text-center mb-4">Create a Task</h1>
+        <form action="" class="space-y-4">
+          <input 
+            class="w-full px-4 py-2 rounded-lg bg-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none" 
+            type="text" 
+            placeholder="Title goes here">
+          
+          <textarea  
+            class="w-full px-4 py-2 rounded-lg bg-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
+            rows="4"
+            placeholder="Write your task"></textarea>
+          
+          <input 
+            type="submit" 
+            value="Create Task" 
+            class="w-full bg-indigo-600 hover:bg-indigo-500 cursor-pointer text-white font-medium py-2 rounded-lg transition">
+        </form>
+      </div>
 
-    <script src="/javascripts/script.js" ></script>
+      <!-- Task List -->
+      <div class="tasks w-full max-w-md mt-8 bg-zinc-800 rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold mb-4">Your Tasks</h2>
+
+        <% if (tasks && tasks.length > 0) { %>
+          <% tasks.forEach(function(val) { %>
+            <div class="task flex items-center justify-between mb-4">
+              <div class="task-title text-lg font-medium"><%= val.title %></div>
+              <div class="task-actions">
+                <button class="edit-btn bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-1 px-2 rounded-lg mr-2">Edit</button>
+                <button class="delete-btn bg-red-500 hover:bg-red-400 text-white font-medium py-1 px-2 rounded-lg">Delete</button>
+              </div>
+            </div>  
+          <% }) %>
+        <% } else { %>
+          <p class="text-gray-400 italic">No tasks available</p>
+        <% } %>
+      </div>
+    </div>
+
+    <script src="/javascripts/script.js"></script>
   </body>
-</html
+</html>

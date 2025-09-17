@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require('node:fs');
 
 const app = express();
 app.use(express.json());
@@ -8,7 +9,10 @@ app.use(express.static(path.join(__dirname, "public")))
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  res.render("index");
+  fs.readdir("./tasks" , function(err, tasks) {
+    res.render("index", {tasks: tasks});
+    console.log(tasks);
+  });
 });
 
 app.get("/profile/:name", (req, res) => {
