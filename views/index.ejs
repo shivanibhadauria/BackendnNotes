@@ -11,13 +11,13 @@
       <!-- Task Form -->
       <div class="form w-full max-w-md bg-zinc-800 rounded-2xl shadow-lg p-6">
         <h1 class="text-2xl font-semibold text-center mb-4">Create a Task</h1>
-        <form action="" class="space-y-4">
-          <input 
+        <form action="/create" method="post" class="space-y-4">
+          <input  name="title"
             class="w-full px-4 py-2 rounded-lg bg-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none" 
             type="text" 
             placeholder="Title goes here">
           
-          <textarea  
+          <textarea  name="details" 
             class="w-full px-4 py-2 rounded-lg bg-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 outline-none resize-none" 
             rows="4"
             placeholder="Write your task"></textarea>
@@ -26,19 +26,21 @@
             type="submit" 
             value="Create Task" 
             class="w-full bg-indigo-600 hover:bg-indigo-500 cursor-pointer text-white font-medium py-2 rounded-lg transition">
+             
         </form>
       </div>
 
       <!-- Task List -->
       <div class="tasks w-full max-w-md mt-8 bg-zinc-800 rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Your Tasks</h2>
+        <h2 class="text-xl font-semibold mb-4"></h2>
 
         <% if (tasks && tasks.length > 0) { %>
           <% tasks.forEach(function(val) { %>
             <div class="task flex items-center justify-between mb-4">
-              <div class="task-title text-lg font-medium"><%= val.title %></div>
+              <h1 class="task-title text-lg font-medium"><%= val %></h1>
+              <a class="task-title text-lg font-medium" href="/tasks/<%= val %>" >Read More</a>
               <div class="task-actions">
-                <button class="edit-btn bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-1 px-2 rounded-lg mr-2">Edit</button>
+                <a href="/edit/<%= val %>" class="edit-btn bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-1 px-2 rounded-lg mr-2">Edit</a>
                 <button class="delete-btn bg-red-500 hover:bg-red-400 text-white font-medium py-1 px-2 rounded-lg">Delete</button>
               </div>
             </div>  
