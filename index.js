@@ -34,10 +34,39 @@ app.get("/tasks/:filename", (req, res) => {
 }
 )
 
+
+app.post("/delete/:filename", (req, res) => {
+  const filePath = path.join(__dirname, "tasks", req.params.filename);
+
+  fs.unlink(filePath, function (err) {
+    console.log("Trying to delete:", filePath);
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error deleting task");
+    }
+    console.log("Deleted:", req.params.filename);
+    res.redirect("/");
+  });
+});
+
+
 app.get("/edit/:filename", (req, res) => {
   res.render('edit', { filename: req.params.filename });
 }
 )
+app.post("/edit", (req, res) => {
+
+
+  fs.rename(`./tasks/${req.body.previous}`, `./tasks/${req.body.next}`, function (err) {
+
+
+    console.log(req.body);
+    // ✅ Redirect only once after successful edit
+    res.redirect(`/edit/${req.body.next}`);
+  });
+});
+
+
 
 
 

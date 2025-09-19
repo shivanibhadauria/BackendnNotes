@@ -41,7 +41,10 @@
               <a class="task-title text-lg font-medium" href="/tasks/<%= val %>" >Read More</a>
               <div class="task-actions">
                 <a href="/edit/<%= val %>" class="edit-btn bg-yellow-500 hover:bg-yellow-400 text-white font-medium py-1 px-2 rounded-lg mr-2">Edit</a>
-                <button class="delete-btn bg-red-500 hover:bg-red-400 text-white font-medium py-1 px-2 rounded-lg">Delete</button>
+                <form action="/delete/<%=  val %>" method="post">
+                  <button type="submit" class="delete-btn bg-red-500 hover:bg-red-400 text-white font-medium py-1 px-2 rounded-lg">Delete</button>
+                </form>
+                
               </div>
             </div>  
           <% }) %>
