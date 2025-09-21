@@ -35,6 +35,18 @@ app.post("/delete/:id", async (req, res) => {
     res.redirect("/allusers");
 })
 
+app.get("/update/:id", async (req, res) => {
+    let user = await userModel.findOne({ _id: req.params.id });
+    res.render("edit", { user })
+
+})
+app.post("/edit/:id", async (req, res) => {
+    let { name, email, image } = req.body;
+
+    let user = await userModel.findOneAndUpdate({ _id: req.params.id }, { name, email, image }, { new: true })
+    res.redirect("/allusers")
+})
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
