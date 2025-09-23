@@ -3,6 +3,10 @@ const app = express();
 const path = require('path');
 const userModel = require('./models/user');
 const user = require('./models/user');
+const loginusers = require('./models/userlogin');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie-parser');
 
 app.set('view engine', "ejs");
 app.use(express.json());
@@ -12,6 +16,72 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('index');
 });
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+app.get('/create', (req, res) => {
+    res.render('create');
+});
+
+
+
+app.post("/createuser", (req, res) => {
+    let { username, password, email, age } = req.body;
+
+    bcrypt.genSalt(10, function (err, salt) {
+
+        bcrypt.hash(password, salt, async function (err, hash) {
+            let loginuser = await loginusers.create({
+                username,
+                password: hash,
+                email,
+                age
+            })
+            res.send(loginuser)
+
+        });
+    });
+
+    let token = jwt.sign({ email }, "secret");
+    res.cookie("token", token);
+
+
+
+
+})
+
+
+app.post("/loginuser", async (req, res) => {
+
+    let user = await loginusers.findOne({ username: req.body.username });
+    console.log(req.body)
+    console.log(user);
+    if (!user) {
+        res.send("user not found");
+    }
+
+    bcrypt.compare(req.body.password, user.password, function (err, result) {
+        if (result) {
+            let token = jwt.sign({ email: user.email }, "secret");
+            res.cookie("token", token);
+
+            res.send("yes you can login")
+        } else {
+            res.send("you can not log in")
+        }
+
+
+
+    })
+
+
+
+})
+
+app.get("/logout", (req, res) => {
+    res.cookie("token", "");
+    res.redirect("/login");
+})
 
 app.get("/allusers", async (req, res) => {
     let allusers = await userModel.find();
