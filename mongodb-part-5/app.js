@@ -7,6 +7,8 @@ const loginusers = require('./models/userlogin');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie-parser');
+const post = require('./models/post');
+
 
 app.set('view engine', "ejs");
 app.use(express.json());
@@ -117,7 +119,38 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     res.redirect("/allusers")
 // })
 
+app.get("/", function (req, res) {
+    res.send("hey");
+})
 
+app.get("/create", async function (req, res) {
+    let user = await loginusers.create({
+        username: "XXX",
+        password: "123",
+        email: "XXXXXXXXXXXXX",
+        age: 20
+
+    })
+
+    res.send(user);
+
+})
+
+app.get('/post', async function (req, res) {
+    let posts = await post.create({
+        postdata: "hello how are you",
+        user: "68d26a396cb4cc0da9dc2c8b",
+
+    })
+    let user = await loginusers.findOne({ _id: "68d26a396cb4cc0da9dc2c8b" });
+    user.posts.push(posts._id);
+    await user.save();
+
+    res.send({ user, posts });
+
+
+}
+)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
